@@ -1,22 +1,48 @@
 import React, {Component} from 'react';
-import unsplash from '../services/UnsplashService';
+import download from 'image-downloader';
 
 class ImageView extends Component{
   constructor(props){
     super(props);
-    this.image = this.props.image;
-    unsplash.photos.getRandomPhoto({ count: "25" })
-    .then(response => response.json())
-    .then(json => {
-      console.log(json);
-    });
+    this.state = {
+      image: this.props.image
+    }
+
+    // this.downloadImage = () => {
+    //   this.props.unsplashService.photos.downloadPhoto(this.state.image);
+    //   // console.log(this.state.image.urls.full);
+    //   // fetch(this.state.image.urls.full)
+    //   //   .then(response => response.body)
+    //   //   .then(image => image.pipe(fs.createWriteStream("download.jpg")));
+    //   const options = {
+    //     url: this.state.image.urls.full,
+    //     dest: 'downloads'                  // Save to /path/to/dest/image.jpg
+    //   }
+    //
+    //   download.image(options)
+    //     .then(({ filename, image }) => {
+    //       console.log('File saved to', filename)
+    //     })
+    //     .catch((err) => {
+    //       console.error(err)
+    //     })
+    // }
   }
+
+  componentWillReceiveProps(props){
+    this.setState({
+      image: props.image
+    })
+  }
+
   render(){
     return(
       <div className="card" styles={{"width": "18rem"}}>
-        <img className="card-img-top" src="http://www.tompetty.com/sites/g/files/g2000007521/f/styles/photo-carousel/public/Sample-image10-highres.jpg?itok=TDZEPjP8" alt="Card image cap"/>
+        <img onClick={this.downloadImage} className="card-img-top" src={this.state.image.urls.small} alt="Card image cap"/>
         <div className="card-body">
-          <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+          <h3><a href={this.state.image.user.links.html} target="_blank">{this.state.image.user.name}</a></h3>
+          <br/>
+          <a href={this.state.image.urls.full} target="_blank" download>Download</a>
         </div>
       </div>
     )

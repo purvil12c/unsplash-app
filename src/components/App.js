@@ -7,15 +7,23 @@ class App extends Component {
   constructor(props){
     super(props);
 
+    this.state = {
+      searchText: ""
+    }
 
+    this.searchTextChange = text => {
+      this.setState({
+        searchText: text
+      });
+    }
 
   }
 
   render() {
     return (
       <div className="App">
-        <Header/>
-        <ImageGrid/>
+        <Header searchTextChange={this.searchTextChange} searchText={this.state.searchText}/>
+        <ImageGrid searchText={this.state.searchText}/>
       </div>
     );
   }
